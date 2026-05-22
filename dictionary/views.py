@@ -1,7 +1,7 @@
-from django.shortcuts import render
-from django.views.generic import ListView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView
 from .models import Dictionary
-
+from .forms import DictionaryCreate
 
 class DictionariesListView(ListView):
     model = Dictionary
@@ -12,4 +12,18 @@ class DictionariesListView(ListView):
         dicts = Dictionary.objects.filter(user = self.request.user)
         context["user_dictionaries"] = dicts
         return context
+
+class DictionaryCreateView(CreateView):
+    model = Dictionary
+    form_class = DictionaryCreate
+    template_name = "dictionary/dictionary_create.html"
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        dictionary = form.save()
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("dictionary:dict")
 
