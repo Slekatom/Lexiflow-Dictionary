@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView
 from .models import Dictionary
 from .forms import DictionaryCreate
 
@@ -12,6 +12,7 @@ class DictionariesListView(ListView):
         dicts = Dictionary.objects.filter(user = self.request.user)
         context["user_dictionaries"] = dicts
         return context
+
 
 class DictionaryCreateView(CreateView):
     model = Dictionary
@@ -26,4 +27,20 @@ class DictionaryCreateView(CreateView):
 
     def get_success_url(self):
         return reverse_lazy("dictionary:dict")
+
+class DictionaryUpdateView(UpdateView):
+    model = Dictionary
+    template_name = "dictionary/dictionary_update.html"
+    fields = ["language1", "language2", "notice"]
+
+    def form_valid(self, form):
+        responce = super().form_valid(form)
+        return responce
+
+    def get_success_url(self):
+        return reverse_lazy("dictionary:dict")
+
+
+
+
 
