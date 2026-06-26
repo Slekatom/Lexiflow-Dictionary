@@ -1,5 +1,7 @@
+from multiprocessing import context
+
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from .models import Dictionary
 from .forms import DictionaryCreate
 
@@ -40,7 +42,22 @@ class DictionaryUpdateView(UpdateView):
     def get_success_url(self):
         return reverse_lazy("dictionary:dict")
 
+class DictionaryDeleteView(DeleteView):
+    model = Dictionary
+    template_name = "dictionary/dictionary_del.html"
 
+    def get_success_url(self):
+        return reverse_lazy("dictionary:dict")
+
+class DictionaryDetailView(DetailView):
+    model = Dictionary
+    template_name = "dictionary/dictionary_detail.html"
+
+    def get_context_data(self, **kwargs):
+        dictionary = self.get_object()
+        context = super().get_context_data(**kwargs)
+        context["dictionary"] = dictionary
+        return context
 
 
 

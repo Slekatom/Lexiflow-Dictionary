@@ -7,4 +7,6 @@ urlpatterns = [
     path("", DictionariesListView.as_view(), name = "dict"),
     path("create/", DictionaryCreateView.as_view(), name = "dict_create"),
     path("update/<int:pk>/", DictionaryUpdateView.as_view(), name = "dict_update"),
+    path("delete/<int:pk>/", DictionaryDeleteView.as_view(), name = "dict_delete"),
+    path("<int:pk>/", DictionaryDetailView.as_view(), name = "dict_detail"),
 ]

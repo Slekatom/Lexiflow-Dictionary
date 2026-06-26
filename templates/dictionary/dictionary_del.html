@@ -1,0 +1,11 @@
+<form method="post">
+  {% csrf_token %}
+
+  <div style="margin-bottom: 20px;">
+    {{ form.as_p }}
+  </div>
+
+    <button type="submit">Submit</button>
+</form>
+
+<h1>Are u sure u wanna del dict?</h1>
