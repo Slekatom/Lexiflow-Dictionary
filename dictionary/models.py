@@ -27,6 +27,7 @@ class Topic(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     level = models.CharField(max_length=50, choices=c.levels())
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="topics")
+    dictionary = models.ForeignKey(Dictionary, on_delete=models.CASCADE, related_name="topics")
 
     def __str__(self):
         return f"{self.user}'s Topic: {self.title}"
