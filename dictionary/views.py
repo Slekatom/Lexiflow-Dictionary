@@ -1,9 +1,11 @@
 from multiprocessing import context
 
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
-from .models import Dictionary
-from .forms import DictionaryCreate
+from .models import Dictionary, Topic
+from .forms import DictionaryCreate, TopicCreate
+
 
 class DictionariesListView(ListView):
     model = Dictionary
@@ -58,6 +60,26 @@ class DictionaryDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["dictionary"] = dictionary
         return context
+
+class TopicCreateView(CreateView):
+    model = Topic
+    form_class = TopicCreate
+    template_name = "dictionary/topic_create.html"
+
+    def form_valid(self, form):
+        self.dictionary = get_object_or_404(
+            Dictionary,
+            pk=self.kwargs["pk"]
+        )
+        form.instance.user = self.request.user
+        form.instance.dictionary = self.dictionary
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("dictionary:dict_detail", kwargs={"pk": self.dictionary.pk})
+
+
 
 
 

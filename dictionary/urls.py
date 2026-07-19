@@ -9,4 +9,5 @@ urlpatterns = [
     path("update/<int:pk>/", DictionaryUpdateView.as_view(), name = "dict_update"),
     path("delete/<int:pk>/", DictionaryDeleteView.as_view(), name = "dict_delete"),
     path("<int:pk>/", DictionaryDetailView.as_view(), name = "dict_detail"),
+    path("<int:pk>/topic/create/", TopicCreateView.as_view(), name = "topic_create"),
 ]
