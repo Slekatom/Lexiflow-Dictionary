@@ -1,7 +1,7 @@
 from multiprocessing import context
 
 from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from .models import Dictionary, Topic
 from .forms import DictionaryCreate, TopicCreate
@@ -79,7 +79,14 @@ class TopicCreateView(CreateView):
     def get_success_url(self):
         return reverse_lazy("dictionary:dict_detail", kwargs={"pk": self.dictionary.pk})
 
+class TopicDeleteView(DeleteView):
+    model = Topic
+    template_name = "dictionary/topic_del.html"
 
-
+    def get_success_url(self):
+        return reverse(
+            "dictionary:dict_detail",
+            kwargs={"pk": self.object.dictionary.pk},
+        )
 
 
